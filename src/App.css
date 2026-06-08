@@ -36,3 +36,43 @@
     transform: rotate(360deg);
   }
 }
+
+.show_allImages{
+  margin: 20px;
+  padding: 0;
+  list-style-type: none;
+  display: grid;
+  gap:20px;
+  grid-template-columns: 1fr 1fr 1fr;
+
+}
+.products__single{
+ height: 250px;
+ padding: 20px;
+ background-color: rgb(220,220,220);
+ text-align:center;
+ border-radius: 5 px;
+ cursor: pointer;
+}
+
+.products__single>img{
+  width: 100%;
+  height: 95%;
+  object-fit:cover;
+  margin-bottom: 1px;
+
+}
+.pagination{
+  margin: 10opx;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+}
+.pagination>span{
+   padding: 15px 20px;
+   border:1px solid gray;
+   cursor: pointer;
+}
+.pagination__disable{
+  opacity: 0;
+}
