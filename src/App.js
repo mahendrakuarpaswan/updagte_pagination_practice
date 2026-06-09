@@ -1,77 +1,35 @@
 import logo from './logo.svg';
 import './App.css';
-import { useEffect, useState } from 'react';
+import {React,Suspense,lazy} from 'react';
+import {Route, BrowserRouter,Routes} from 'react-router-dom';
+
+import Header from './header/Header';
+const Home = lazy(()=>import('./components/Home'));
+const About = lazy(()=>import('./components/About'));
+const Contact = lazy(()=>import('./components/Contact'));
+const Information = lazy(()=>import('./components/Information'));
+const ProductDetails = lazy(()=>import('./components/Product-details'));
+const ProductListing = lazy(()=>import('./components/Product-listing'));
 
 function App() {
-
-const [products,setProducts] = useState([]);
-const [page,setPage] = useState(1);
-
-const fetchData  = async() =>{
-      const res = await  fetch("https://dummyjson.com/products?limit=100");
-      const data =  await res.json();
-      if(data && data.products){
-        setProducts(data.products);
-      }     
-}
-
-useEffect(()=>{
-   fetchData()
-},[]);
-
- const selectPageHandler = (selectpage) =>{
-    if(selectpage>=1 && selectpage<=products.length/10 && selectpage !==page ){
-       setPage(selectpage);
-    }
-    
-  }
-
-
-
 
 
   return (
     <div className="App">
-       {products.length>0 && <div className='show_allImages'>
-            {products.slice(page*10 - 10,page*10).map((pro,index)=>{
-           
-             return (
-                <span className='products__single' key={pro.id}>
-   
-                    <img src={pro.thumbnail} alt={pro. title}/>
-                    <span>{pro. title}</span>
-                    
-                </span>
-        )
-       })}
-        </div>}
-  
-       {products.length>0 && <div className='pagination'>
-          
-              <span 
-                onClick={()=>setPage(page-1)}
-                className={page>1?"":"pagination__disable"}
-                >
-                Previous
-              </span>
-                
-                  {[...Array(products.length/10)].map((_,i)=>{
-                    return (
-                            
-                            <span onClick={()=>selectPageHandler(i+1)} >{i+1}</span>
-                    )
-                  })}
-
-                <span 
-                 onClick={()=>selectPageHandler(page+1)}
-                 className={page<products.length/10?"":"pagination__disable"}
-
-                >
-                   next
-                </span>
-            
-        </div>}
-
+     
+    <BrowserRouter>
+     <Header/>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Routes>
+           <Route path="/" element={<Home/>}/>
+           <Route path="/about" element={<About/>}/>
+           <Route path="/contact" element={<Contact/>}/>
+           <Route path="/information" element={<Information/>}/>
+           <Route path="/productdetail/:id" element={<ProductDetails/>}/>
+           <Route path='/productlisting' element={<ProductListing/>}/>
+      </Routes>
+        </Suspense>
+    </BrowserRouter>      
     </div>
   );
 }
